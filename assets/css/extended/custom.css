@@ -1,0 +1,59 @@
+:root{
+  --main-width: 740px;
+  --content-gap: 28px;
+  --radius: 14px;
+}
+
+/* 中文阅读：更像书，不像网页 */
+.post-content{
+  line-height: 1.9;
+  letter-spacing: .2px;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* 标题更克制（避免网页感） */
+.post-title{
+  line-height: 1.22;
+  letter-spacing: .1px;
+}
+
+/* 段落节奏：决定高级感 */
+.post-content p,
+.post-content ul,
+.post-content ol{
+  margin: 1.05rem 0;
+}
+.post-content li{ margin: .35rem 0; }
+
+/* 引用：不抢戏 */
+.post-content blockquote{
+  margin: 1.2rem 0;
+  padding: .6rem 1rem;
+  border-left: 3px solid var(--secondary);
+  border-radius: 10px;
+  opacity: .95;
+}
+
+/* 代码块：更干净 */
+.post-content pre{
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+
+/* 图片：统一圆角 */
+.post-content img{
+  border-radius: 14px;
+}
+
+/* 元信息降低存在感 */
+.post-meta,
+.entry-footer{
+  opacity: .75;
+}
+
+/* 导航留白：更像“入口”而不是工具栏 */
+.nav{
+  padding-top: 18px;
+  padding-bottom: 10px;
+}

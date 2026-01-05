@@ -1,0 +1,50 @@
+baseURL = "http://localhost:1313/"
+languageCode = "zh-cn"
+title = "My Blog"
+theme = "PaperMod"
+
+[params]
+  env = "production"
+  defaultTheme = "auto"
+  # 写作型：减少噪音
+  ShowBreadCrumbs = false
+  ShowShareButtons = false
+  ShowWordCount = false
+  ShowReadingTime = true
+  ShowPostNavLinks = true
+
+  # 目录：有但默认收起
+  ShowToc = true
+  TocOpen = false
+
+  # 首页更统一
+  disableSpecial1stPost = true
+  ShowCodeCopyButtons = true
+
+  [params.homeInfoParams]
+    Title = "My Blog"
+    Content = "写作 / 学习 / 记录。长期主义。"
+
+[menu]
+  [[menu.main]]
+    name = "文章"
+    url = "/posts/"
+    weight = 1
+  [[menu.main]]
+    name = "归档"
+    url = "/archives/"
+    weight = 2
+  [[menu.main]]
+    name = "搜索"
+    url = "/search/"
+    weight = 3
+  [[menu.main]]
+    name = "关于"
+    url = "/about/"
+    weight = 4
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[pagination]
+  pagerSize = 10

@@ -1,0 +1,38 @@
+baseURL: "/"
+languageCode: "zh-cn"
+title: "My Blog"
+theme: ["PaperMod"]
+paginate: 10
+
+params:
+  env: production
+  defaultTheme: auto
+  ShowReadingTime: true
+  ShowToc: true
+  TocOpen: false
+  ShowCodeCopyButtons: true
+
+  homeInfoParams:
+    Title: "My Blog"
+    Content: "写作 / 学习 / 记录。长期主义。"
+
+menu:
+  main:
+    - name: "文章"
+      url: "/posts/"
+      weight: 1
+    - name: "归档"
+      url: "/archives/"
+      weight: 2
+    - name: "搜索"
+      url: "/search/"
+      weight: 3
+    - name: "关于"
+      url: "/about/"
+      weight: 4
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
