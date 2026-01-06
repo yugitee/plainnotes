@@ -1,6 +1,6 @@
 baseURL = "http://localhost:1313/"
 languageCode = "zh-cn"
-title = "My Blog"
+title = "平平无奇的笔记库"
 theme = "PaperMod"
 
 [params]
@@ -22,8 +22,8 @@ theme = "PaperMod"
   ShowCodeCopyButtons = true
 
   [params.homeInfoParams]
-    Title = "My Blog"
-    Content = "写作 / 学习 / 记录。长期主义。"
+    Title = "平平无奇的笔记库"
+    Content = " 学习 / 记录 。长期主义。"
 
 [menu]
   [[menu.main]]
@@ -48,3 +48,9 @@ theme = "PaperMod"
 
 [pagination]
   pagerSize = 10
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    lineNos = true
+    codeFences = true
