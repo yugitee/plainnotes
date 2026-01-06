@@ -1,59 +1,283 @@
-:root{
-  --main-width: 740px;
-  --content-gap: 28px;
+/* =========================
+   LXGW WenKai 本地自托管（TTF 版）
+   ========================= */
+
+@font-face {
+  font-family: "LXGW WenKai Local";
+  src: url("/fonts/LXGWWenKai-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LXGW WenKai Local";
+  src: url("/fonts/LXGWWenKai-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+/* =========================================================
+   PaperMod + LXGW WenKai（最终简洁版）
+   目标：
+   1) 字体：霞鹜文楷
+   2) 排版：书籍式、桌面阅读舒适
+   3) 背景：全站统一，无页面突变；归档/搜索不套娃
+   ========================================================= */
+
+/* ---------- 1) 基础变量 ---------- */
+:root {
+  --content-max-width: 780px;
   --radius: 14px;
+
+  --font-sans: "LXGW WenKai Lite", "LXGW WenKai",
+               ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+               "Noto Sans SC", Arial;
+
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+               "Liberation Mono", "Courier New", monospace;
+
+  --body-font-size: 16.8px;
+  --body-line-height: 1.82;
 }
 
-/* 中文阅读：更像书，不像网页 */
-.post-content{
-  line-height: 1.9;
-  letter-spacing: .2px;
-  word-break: break-word;
-  hyphens: auto;
+/* ---------- 2) 亮/暗模式：只改背景与卡片，避免和主题打架 ---------- */
+html:not(.dark) {
+  --theme: #fbfbfc;
+  --entry: #ffffff;
+  --border-soft: rgba(0, 0, 0, 0.10);
+  --shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.08);
 }
 
-/* 标题更克制（避免网页感） */
-.post-title{
-  line-height: 1.22;
-  letter-spacing: .1px;
+html.dark {
+  --theme: #0b0f14;
+  --entry: #111827;
+  --border-soft: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.45);
 }
 
-/* 段落节奏：决定高级感 */
-.post-content p,
+/* ---------- 3) 全局：背景统一 + 书籍式排版 ---------- */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: "LXGW WenKai Local",
+               "LXGW WenKai",
+               "PingFang SC",
+               "Microsoft YaHei",
+               system-ui, sans-serif;
+}
+
+
+/* 内容宽度：桌面阅读像书 */
+.main {
+  max-width: var(--content-max-width);
+}
+
+/* ---------- 4) 统一“正文页书页卡片”：单篇 / 关于 / 归档 / 搜索 ---------- */
+/* PaperMod：单篇是 .post-single；页面（about/search/archives）通常是 .page */
+.post-single,
+.page {
+  background: var(--entry);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 1.35em 1.55em;
+  margin-top: 1.2em;
+}
+
+/* 移动端稍收紧 */
+@media (max-width: 768px) {
+  .post-single,
+  .page {
+    padding: 1.05em 1.05em;
+  }
+}
+
+/* ---------- 5) 首页：HomeInfo 保持小巧（不做大白块） ---------- */
+.first-entry {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin-top: 0.2em;
+}
+
+/* HomeInfo 内容轻量承载：一条胶囊，不空、不大 */
+.first-entry .entry-content {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: color-mix(in srgb, var(--entry) 55%, transparent);
+}
+
+/* ---------- 6) 列表页文章卡片（首页/Posts）：厚实但克制 ---------- */
+.post-entry {
+  border-radius: var(--radius);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  padding: 1.0em 1.15em;
+}
+
+/* ---------- 7) 归档页：禁止“套娃”，只让最外层呈现为书页卡片 ---------- */
+/* 归档页内部结构常有 archive-year/month/entry 等，全部去背景、去边框、去阴影 */
+.archive-year,
+.archive-month,
+.archive-entry,
+.archive-post,
+.archive-meta,
+.archive-header,
+.archive-footer {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* 归档条目保持简洁分隔 */
+.archive-entry,
+.archive-post {
+  padding: 0.55em 0.2em !important;
+  margin: 0.25em 0 !important;
+  border-bottom: 1px solid var(--border-soft);
+}
+.archive-entry:last-child,
+.archive-post:last-child {
+  border-bottom: 0;
+}
+
+/* 如果归档里又嵌套了 post-entry，压掉它的卡片样式 */
+.archive-entry .post-entry,
+.archive-post .post-entry {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* ---------- 8) 搜索页：不要“卡片套卡片”，只保留 .page 外层 ---------- */
+/* searchbox 内层完全透明，只保留输入框轻边框 */
+#searchbox,
+.search,
+.searchbox,
+.search-form,
+.search-wrapper {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* 输入框：简洁干净 */
+#searchInput,
+#searchbox input,
+.search input,
+input[type="search"] {
+  background: transparent !important;
+  border: 1px solid var(--border-soft) !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  padding: 0.65em 0.85em !important;
+}
+
+/* 搜索结果：用轻分隔线 */
+#searchResults,
+.search-results {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  margin-top: 0.9em;
+}
+
+#searchResults li,
+.search-results li {
+  border-bottom: 1px solid var(--border-soft);
+  padding: 0.75em 0.2em;
+}
+#searchResults li:last-child,
+.search-results li:last-child {
+  border-bottom: 0;
+}
+
+/* ---------- 9) Markdown：书籍式层次（重点：标题、段落、列表、引用、代码） */
+.post-content p {
+  margin: 1.05em 0;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3 {
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+}
+
+.post-content h2 {
+  padding-top: 0.45em;
+  border-top: 1px solid var(--border-soft);
+}
+
 .post-content ul,
-.post-content ol{
-  margin: 1.05rem 0;
-}
-.post-content li{ margin: .35rem 0; }
-
-/* 引用：不抢戏 */
-.post-content blockquote{
-  margin: 1.2rem 0;
-  padding: .6rem 1rem;
-  border-left: 3px solid var(--secondary);
-  border-radius: 10px;
-  opacity: .95;
+.post-content ol {
+  margin: 0.9em 0 1.1em 1.25em;
 }
 
-/* 代码块：更干净 */
-.post-content pre{
-  border-radius: 14px;
-  padding: 1rem 1.1rem;
+.post-content li {
+  margin: 0.35em 0;
 }
 
-/* 图片：统一圆角 */
-.post-content img{
-  border-radius: 14px;
+.post-content blockquote {
+  border-left: 4px solid var(--primary);
+  padding: 0.45em 1em;
+  margin: 1.2em 0;
+  opacity: 0.98;
 }
 
-/* 元信息降低存在感 */
-.post-meta,
-.entry-footer{
-  opacity: .75;
+.post-content a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.2px;
 }
 
-/* 导航留白：更像“入口”而不是工具栏 */
-.nav{
-  padding-top: 18px;
-  padding-bottom: 10px;
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
 }
+
+.post-content pre {
+  border-radius: var(--radius);
+  padding: 1em 1.1em;
+  box-shadow: var(--shadow-soft);
+  overflow: auto;
+}
+
+.post-content img {
+  border-radius: var(--radius);
+}
+
+.post-content hr {
+  margin: 2em 0;
+  opacity: 0.55;
+}
+
+/* TOC：像书签块（不抢戏） */
+.toc {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 0.8em 0.9em;
+}
+
+/* ---------- 10) 降低页面切换感：顶部区域保持干净 ---------- */
+.header { background: transparent; }
+.nav { max-width: var(--content-max-width); }
+	
+
