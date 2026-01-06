@@ -1,21 +1,21 @@
-<!-- LXGW WenKai（霞鹜文楷） -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.1.0/style.css">
+<!-- LXGW WenKai（霞鹜文楷）｜本地 woff2 预加载 -->
 
-<!-- 阅读进度条（克制、有用） -->
+{{- /* 只在文章页（single）输出：进度条 + 回到顶部 */ -}}
+{{- if .IsPage -}}
 <style>
-  #readProgress {
+  /* ---------- 阅读进度条 ---------- */
+  #readProgress{
     position: fixed;
-    left: 0;
-    top: 0;
+    left: 0; top: 0;
     height: 2px;
     width: 0%;
     background: var(--primary);
     z-index: 99999;
     opacity: .9;
+    transition: width .12s linear;
   }
 
-  /* ========== 小蝙蝠回到顶部（跟随主题色 + 轻微扇翅膀） ========== */
+  /* ---------- 小蝙蝠回到顶部 ---------- */
   #batTop{
     position: fixed;
     right: 22px;
@@ -23,56 +23,87 @@
     width: 42px;
     height: 42px;
     border-radius: 999px;
+
     background: var(--entry);
-    color: var(--secondary);       /* 跟随主题（克制）；想更显眼用 --primary */
-    border: 1px solid var(--border-soft);
+    color: var(--secondary);
+    border: 1px solid var(--border-soft, var(--border));
     box-shadow: 0 12px 28px rgba(0,0,0,.12);
-    display: none;
+
+    display: flex;
     align-items: center;
     justify-content: center;
+
     cursor: pointer;
     z-index: 9999;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(6px);
+
     transition: transform .2s ease, opacity .2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  #batTop.is-show{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   #batTop:hover{
     transform: translateY(-2px);
   }
 
-  /* 翅膀：旋转基点（决定“扇翅膀”的自然程度） */
   .bat-icon .wing.left  { transform-origin: 90% 50%; }
   .bat-icon .wing.right { transform-origin: 10% 50%; }
 
-  /* hover：轻微扇一下（克制） */
   #batTop:hover .wing.left  { transform: rotate(-6deg); }
   #batTop:hover .wing.right { transform: rotate(6deg); }
 
-  /* 动画：短、干净 */
   .bat-icon .wing{
     transition: transform .18s ease;
   }
+
+  @media (prefers-reduced-motion: reduce){
+    #readProgress{ transition: none; }
+    #batTop{ transition: none; }
+    .bat-icon .wing{ transition: none; }
+  }
 </style>
 
-<div id="readProgress"></div>
+<div id="readProgress" aria-hidden="true"></div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    /* ---------- 阅读进度条 ---------- */
+    /* ---------- 阅读进度条：rAF 节流 ---------- */
     const bar = document.getElementById("readProgress");
-    const onScroll = () => {
+    let ticking = false;
+
+    const updateProgress = () => {
       const h = document.documentElement;
       const max = h.scrollHeight - h.clientHeight;
       const p = max > 0 ? (h.scrollTop / max) * 100 : 0;
       bar.style.width = p.toFixed(2) + "%";
+      ticking = false;
     };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateProgress);
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
-    /* ---------- 小蝙蝠：回到顶部（内联SVG，才能跟随主题色） ---------- */
-    const btn = document.createElement("div");
+    /* ---------- 小蝙蝠按钮（button + class 切换） ---------- */
+    const btn = document.createElement("button");
     btn.id = "batTop";
-    btn.setAttribute("title", "回到顶部");
+    btn.type = "button";
+    btn.title = "回到顶部";
     btn.setAttribute("aria-label", "回到顶部");
+
     btn.innerHTML = `
 <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 64 64"
@@ -126,8 +157,8 @@
              s-4.7-.8-6.5-1.8z"/>
   </g>
 
-  <!-- 眼睛 -->
-  <g fill="white" opacity=".9">
+  <!-- 眼睛：不强制白色，浅色主题也更克制 -->
+  <g fill="currentColor" opacity=".35">
     <circle cx="29.6" cy="29.6" r="1"/>
     <circle cx="34.4" cy="29.6" r="1"/>
   </g>
@@ -136,8 +167,9 @@
     document.body.appendChild(btn);
 
     const toggleBat = () => {
-      btn.style.display = window.scrollY > 320 ? "flex" : "none";
+      btn.classList.toggle("is-show", window.scrollY > 320);
     };
+
     window.addEventListener("scroll", toggleBat, { passive: true });
     toggleBat();
 
@@ -146,4 +178,4 @@
     });
   });
 </script>
-
+{{- end -}}
