@@ -7,7 +7,7 @@ keywords:
   - 系统
 description: 从零开始安装linux
 tags:
-categories:总结
+categories:
 draft: false
 ---
 
@@ -353,22 +353,17 @@ UUID=xxx /mnt/data ext4
 
 # 十一、进入新系统
 
-现在 `/mnt` 中已经是完整的 Linux 系统。此时[[安装过程中，什么时候拔U盘？|为什么不能拔除U盘？？]]
-执行：
+现在 `/mnt` 中已经是完整的 Linux 系统。由于系统中还缺乏引导程序，此时不能拔除U盘。
 
 ```bash
 arch-chroot /mnt
 ```
 
-`chroot` 的作用是：将当前环境切换到`/mnt`
-
-之后所有操作都在新系统中进行。
+`chroot` 的作用是：将当前环境切换到`/mnt`。之后所有操作都在新系统中进行。
 
 # 十二、系统基础配置
 
 ## 设置时区
-
-执行：
 
 ```bash
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
@@ -409,8 +404,6 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # 十三、设置主机名
 
-执行：
-
 ```bash
 echo archlinux > /etc/hostname
 ```
@@ -432,8 +425,6 @@ nano /etc/hosts
 ```
 
 # 十四、设置 root 密码
-
-执行：
 
 ```bash
 passwd
@@ -484,8 +475,6 @@ passwd we
 ```
 
 ## 启用 sudo
-
-执行：
 
 ```bash
 EDITOR=nano visudo
@@ -562,5 +551,5 @@ echo '/swapfile none swap defaults 0 0' >> /etc/fstab
 
 # 结语
 
-[arch wiki](https://wiki.archlinuxcn.org)中已经讲明白了所有的安装流程，我之所以做这么一个总结，主要是让自己再次梳理挂载点、安装、硬盘等关系，这对理解系统有帮助。
+[Arch Wiki](https://wiki.archlinuxcn.org/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97)中已经讲明白了所有的安装流程，我之所以做这么一个总结，主要是让自己再次梳理挂载点、安装、硬盘等关系，这对理解系统有帮助。
 这篇文章向大家提供了一次实践的过程展示，让大家了解一下具体过程，虽然有点多。其实arch的安装与其他相比就是少了一个图形界面，底层的东西都是一样的。
