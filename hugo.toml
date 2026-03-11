@@ -1,4 +1,4 @@
-baseURL = "http://localhost:1313/"
+baseURL = "https://blog.521702.xyz/"
 title = "平平无奇的笔记库"
 theme = "PaperMod"
 languageCode = "zh-cn"
@@ -44,7 +44,7 @@ ShowPostNavLinks = true
 ShowShareButtons = false
 ShowCodeCopyButtons = true
 
-disableScrollToTop = false
+disableScrollToTop = true
 hideMeta = false
 hideSummary = false
 
@@ -80,7 +80,7 @@ disableThemeToggle = false
   subtitle = "写点随笔，记录一些生活与想法"
 
 # 这里是重点
-  imageUrl = "/images/profile.png"
+  imageUrl = "/images/profile.webp"
   imageWidth = 180
   imageHeight = 180
 
