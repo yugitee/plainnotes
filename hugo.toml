@@ -26,7 +26,7 @@ home = ["HTML", "RSS", "JSON"]
     codeFences = true
     guessSyntax = true
     lineNos = false
-    style = "github-dark"
+    style = "solarized-light"
 
   [markup.goldmark.renderer]
     unsafe = true
