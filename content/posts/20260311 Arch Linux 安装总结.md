@@ -87,6 +87,7 @@ cfdisk /dev/nvme0n1
 ```
 
 创建：
+
 > 选择磁盘、新建new--设置大小--设置type
 > 注意需要用gpt格式。如果不是，推出重新进去，选择gpt
 
@@ -117,6 +118,7 @@ mkfs.fat -F32 /dev/nvme0n1p1
 ```
 
 系统盘：
+
 >全部格式化为Btrfs
 
 ```bash
@@ -134,6 +136,7 @@ mkfs.ext4 /dev/sda1
 # 五、创建 Btrfs 子卷结构
 
 Btrfs 子卷类似于逻辑分区，但它们位于同一个文件系统内部。  
+
 使用子卷的好处：
 
 - 可以单独快照（snapshot）
@@ -154,6 +157,7 @@ Btrfs 子卷类似于逻辑分区，但它们位于同一个文件系统内部�
 ## 5.1 临时挂载 Btrfs 分区
 
 在创建子卷前，需要先挂载 Btrfs 分区：
+
 >将mnt挂载到物理硬盘的第二分区——nvme0n1p2，第二分区就是上面根据分区表建立的。
 
 ```bash
@@ -196,17 +200,19 @@ umount /mnt
 ```
 
 原因：
+
 目前的磁盘架构是：
+
 Btrfs filesystem (top-level)
 ├── @
 ├── @home
 └── @snapshots
+
 如果在这里安装系统，那么系统就会存在与Btrfs的top-level中，那我们创建的子卷都没有用了。我们需要将系统安装在@中，那就**需要将top-level的挂载卸载掉，重新挂载子卷**。这是安装系统的需要。
 
 # 六、重新挂载 Btrfs 系统分区
 
-之前挂载的是 **整个 Btrfs 分区**，  
-现在需要只挂载 **@ 子卷作为系统根目录**。
+之前挂载的是 **整个 Btrfs 分区**， 现在需要只挂载 **@ 子卷作为系统根目录**。
 
 ```bash
 mount -o subvol=@,compress=zstd,noatime /dev/nvme0n1p2 /mnt
@@ -252,6 +258,7 @@ mount -o subvol=@snapshots /dev/nvme0n1p2 /mnt/.snapshots
 ```
 
 **访问 /mnt/home= 访问 nvme0n1p2 中的 @home 子卷**
+
 **其实 /mnt = /** ——而这个mnt其实也就是一个临时的目录，它可以是任何目录名称。只不过arch wiki中使用mnt，然后都用mnt也好做教程。
 
 现在 Btrfs 的结构已经完成。也完成了挂载根分区的步骤。
@@ -266,8 +273,7 @@ mount /dev/nvme0n1p1 /mnt/boot
 
 原因：
 
-安装 Bootloader（例如 GRUB）时  
-必须将 EFI 分区挂载到 `/boot`。
+安装 Bootloader（例如 GRUB）时，必须将 EFI 分区挂载到 `/boot`。
 
 EFI 文件系统必须是 **FAT32**。（前面1G的空间，已经格式化为FAT32）
 
@@ -330,7 +336,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 | 参数  | 含义      |
 | --- | ------- |
 | -U  | 使用 UUID |
-``  > > | 追加到文件 |`
+> > | 追加到文件 |`
 
 将挂载的信息追加写到fatab中，其中，文件系统用UUID来表示，因为这个一直不会变。
 
@@ -348,8 +354,7 @@ UUID=xxx /home btrfs subvol=@home
 UUID=xxx /mnt/data ext4
 ```
 
-如果没有 `/mnt/data`  
-说明数据盘没有正确挂载。
+如果没有 `/mnt/data` ，说明数据盘没有正确挂载。
 
 # 十一、进入新系统
 
@@ -491,6 +496,7 @@ EDITOR=nano visudo
 这样 `we` 用户就可以使用 `sudo`。
 
 至此：系统安装已经基本完成。  
+
 接下来：
 
 ```
@@ -552,4 +558,5 @@ echo '/swapfile none swap defaults 0 0' >> /etc/fstab
 # 结语
 
 [Arch Wiki](https://wiki.archlinuxcn.org/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97)中已经讲明白了所有的安装流程，我之所以做这么一个总结，主要是让自己再次梳理挂载点、安装、硬盘等关系，这对理解系统有帮助。
+
 这篇文章向大家提供了一次实践的过程展示，让大家了解一下具体过程，虽然有点多。其实arch的安装与其他相比就是少了一个图形界面，底层的东西都是一样的。

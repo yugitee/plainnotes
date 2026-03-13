@@ -1,7 +1,7 @@
 ---
 title: 从零开始用 Docker 玩转 VPS 部署
-date: 2026-01-06T12:00:00+08:00
-lastmod: 2026-01-06T12:00:00+08:00
+date: 2026-02-03T18:38:53+08:00
+lastmod: 2026-02-03T18:38:41+08:00
 keywords:
   - VPS
   - DOCKER
@@ -22,8 +22,6 @@ draft: false
 
 今天，我们要聊聊目前最流行的服务部署方式：**Docker + Nginx Proxy Manager (NPM)**。
 
----
-
 ## 一、 为什么我们要用 Docker？
 
 你可以把 VPS 想象成一间**毛坯房**，而你要安装的各种服务（比如云盘、博客、相册）就像是家具。
@@ -35,8 +33,6 @@ draft: false
 3. **一键搬家（更便捷）**：Docker 把所有配置都写在一张“配方表” (`docker-compose.yml`) 里。下次换服务器，只要带着这张表和数据文件夹，几秒钟就能在新宿舍复原。
     
 
----
-
 ## 二、 基础：给你的 VPS 装上“引擎”
 
 在开始之前，我们需要在 VPS（推荐使用 Ubuntu/Debian 系统）上安装 Docker 及其管理工具。
@@ -44,8 +40,6 @@ draft: false
 ### 1. 一键安装环境
 
 复制并粘贴以下命令，剩下的交给系统：
-
-Bash
 
 ```
 # 1. 更新系统并安装基础工具
@@ -64,8 +58,6 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 > **小贴士**：看到 `docker --version` 弹出版本号，说明你的“引擎”已经启动成功了！
 
----
-
 ## 三、 进阶：请一位“大内总管” (NPM)
 
 在 VPS 上跑多个服务，最头疼的就是记不住端口号，还有那折磨人的 SSL 证书申请。
@@ -81,15 +73,11 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 首先，我们建立一个“公共社区网络”，让所有容器都能互相说话：
 
-Bash
-
 ```
 docker network create net
 ```
 
 然后在 `~/docker/npm` 目录下创建 `docker-compose.yml`，填入以下内容：
-
-YAML
 
 ```
 services:
@@ -112,8 +100,6 @@ networks:
     external: true
 ```
 
----
-
 ## 四、 实战：部署私有云盘 (Nextcloud)
 
 有了管家，我们来请进第一位客人——**Nextcloud**。
@@ -122,7 +108,6 @@ networks:
 
 在 `~/docker/nextcloud` 文件夹下创建 `docker-compose.yml`：
 
-YAML
 
 ```
 services:
